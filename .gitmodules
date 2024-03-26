@@ -1,0 +1,4 @@
+[submodule "ollama"]
+	path = ollama
+	url = git@github.com:ollama/ollama.git
+	shallow = true
