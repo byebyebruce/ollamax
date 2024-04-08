@@ -17,7 +17,7 @@ go >= 1.22
     ```
 2. Add submodule
     ```bash
-    git submodule add git@github.com:byebyebruce/ollamax.git 
+    git submodule add https://github.com/byebyebruce/ollamax.git
     ```
    
 3. Init go work
