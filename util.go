@@ -30,7 +30,7 @@ func modelOptions(model *server.Model, requestOpts map[string]interface{}) (api.
 }
 
 type llmWrapper struct {
-	llm.LLM
+	*llm.LlamaServer
 	*server.Model
 }
 
@@ -41,7 +41,7 @@ func load(modelName string) (*llmWrapper, error) {
 	}
 	var opts, _ = modelOptions(model, nil)
 
-	llmRunner, err := llm.New(model.ModelPath, model.AdapterPaths, model.ProjectorPaths, &opts)
+	llmRunner, err := llm.NewLlamaServer(model.ModelPath, model.AdapterPaths, model.ProjectorPaths, opts)
 	if err != nil {
 		// some older models are not compatible with newer versions of llama.cpp
 		// show a generalized compatibility error until there is a better way to
@@ -51,7 +51,7 @@ func load(modelName string) (*llmWrapper, error) {
 		}
 
 	}
-	return &llmWrapper{Model: model, LLM: llmRunner}, err
+	return &llmWrapper{Model: model, LlamaServer: llmRunner}, err
 }
 
 func initializeKeypair() error {

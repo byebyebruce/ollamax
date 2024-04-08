@@ -38,7 +38,7 @@ func TestCore_Predict(t *testing.T) {
 	for i := 0; i < 1; i++ {
 
 		msg = append(msg, api.Message{"user", "why the sky is blue" + strconv.Itoa(i), nil})
-		cc, err := c.ChatStream(ctx, msg, nil)
+		cc, err := c.ChatStream(ctx, msg)
 		require.Nil(t, err)
 		require.NotNil(t, cc)
 		result := ""

@@ -66,6 +66,7 @@ func NewWithAutoDownload(model string) (*Ollamax, error) {
 	}
 	if !has {
 		bar := progressbar.Default(100)
+		fmt.Println("Downloading model", model)
 		err = PullModel(context.Background(), model, func(r api.ProgressResponse) {
 			if r.Total == 0 {
 				return
@@ -76,6 +77,7 @@ func NewWithAutoDownload(model string) (*Ollamax, error) {
 		if err != nil {
 			return nil, err
 		}
+		fmt.Println("Download over", model)
 	}
 
 	return New(model)
@@ -116,7 +118,7 @@ func (c *Ollamax) Reload(model string) error {
 }
 
 type chatResponse struct {
-	Result llm.PredictResult
+	Result llm.CompletionResponse
 	Err    error
 }
 
@@ -170,7 +172,7 @@ func (c *Ollamax) ChatWithOption(ctx context.Context, messages []api.Message, op
 	}
 
 	encode := func(s string) ([]int, error) {
-		return c.model.Encode(ctx, s)
+		return c.model.Tokenize(ctx, s)
 	}
 	prompt, err := server.ChatPrompt(c.model.Template, messages, opts.NumCtx, encode)
 	if err != nil {
@@ -195,7 +197,7 @@ func (c *Ollamax) ChatWithOption(ctx context.Context, messages []api.Message, op
 		defer c.mu.Unlock()
 		defer close(ch)
 
-		fn := func(r llm.PredictResult) {
+		fn := func(r llm.CompletionResponse) {
 			select {
 			case <-ctx.Done():
 				return
@@ -204,13 +206,13 @@ func (c *Ollamax) ChatWithOption(ctx context.Context, messages []api.Message, op
 		}
 
 		// Start prediction
-		predictReq := llm.PredictOpts{
+		predictReq := llm.CompletionRequest{
 			Prompt: prompt,
 			Format: format,
 			//Images:  images,
 			Options: opts,
 		}
-		if err := c.model.Predict(ctx, predictReq, fn); err != nil {
+		if err := c.model.Completion(ctx, predictReq, fn); err != nil {
 			select {
 			case <-ctx.Done():
 			case ch <- &chatResponse{Err: err}:
