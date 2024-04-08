@@ -15,17 +15,21 @@ go >= 1.22
     ```bash
     go mod init <module-name>
     ```
-
-2. Init go work
+2. Add submodule
+    ```bash
+    git submodule add git@github.com:byebyebruce/ollamax.git 
+    ```
+   
+3. Init go work
     ```bash
     go work init . ./ollamax ./ollamax/ollama
     ```
 
-3. Build library
+4. Build library
     ```bash
     make -C ollamax
     ```
-4. Write a test code
+5. Write a test code
 ```go
 import(
     "github.com/ollamax/ollamax"
