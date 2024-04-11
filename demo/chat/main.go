@@ -13,6 +13,7 @@ import (
 	"syscall"
 
 	"github.com/byebyebruce/ollamax"
+	"github.com/fatih/color"
 	"github.com/ollama/ollama/api"
 )
 
@@ -56,7 +57,6 @@ func main() {
 				return
 			}
 
-			fmt.Println("AI:----------------------------------begin")
 			full := ""
 		LOOP:
 			for m := range outChan {
@@ -64,10 +64,9 @@ func main() {
 					fmt.Println(m.Err)
 					break LOOP
 				}
-				fmt.Print(m.Result.Content)
+				fmt.Print(color.GreenString(m.Result.Content))
 				full += m.Result.Content
 			}
-			fmt.Println("------------------------------------end")
 			fmt.Println()
 			history = append(history, api.Message{"user", i, nil}, api.Message{"assistant", full, nil})
 		}
