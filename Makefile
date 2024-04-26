@@ -12,3 +12,5 @@ ollama/server/export.go:
 	@echo write export.go
 	@printf "package server\n\ntype RegistryOptions = registryOptions\n" > ollama/server/export.go
 
+install:
+	go install ./cmd/ollamax
