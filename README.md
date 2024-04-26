@@ -3,7 +3,7 @@
 Ollamax is a simple and easy to use library for making a local LLM app.  
 It is based on the [Ollama](https://github.com/ollama/ollama)
 
-## Some use case
+## Demos
 - [Local LLM Chat Demo](demo/chat)
 - [Local LLM Embedding](demo/embedding)
 - [Local LLM Vision](demo/vision)
@@ -30,22 +30,22 @@ go >= 1.22
     make -C ollamax
     ```
 5. Write a test code
-```go
-import(
-    "github.com/ollamax/ollamax"
-)
+   ```go
+   import(
+       "github.com/byebyebruce/ollamax"
+   )
 
-if err := ollamax.Init(); err != nil {
-    log.Fatalln(err)
-}
-defer ollamax.Cleanup()
-llm, err := ollamax.NewWithAutoDownload("qwen:0.5b")
-if err != nil {
-    panic(err)
-}
-defer llm.Close()
-llm.Chat...
-```
+   if err := ollamax.Init(); err != nil {
+       log.Fatalln(err)
+   }
+   defer ollamax.Cleanup()
+   llm, err := ollamax.NewWithAutoDownload("qwen:0.5b")
+   if err != nil {
+       panic(err)
+   }
+   defer llm.Close()
+   llm.Chat...
+   ```
 
 ## Where to find models
 https://ollama.com/library
