@@ -3,7 +3,6 @@ package main
 import (
 	"bufio"
 	"context"
-	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -33,7 +32,7 @@ func chatCMD() *cobra.Command {
 	var (
 		systemPrompt string
 	)
-	flag.StringVar(&systemPrompt, "prompt", "", "system prompt")
+	c.Flags().StringVar(&systemPrompt, "prompt", "", "system prompt")
 
 	c.RunE = func(cmd *cobra.Command, args []string) error {
 		if len(args) == 0 {
